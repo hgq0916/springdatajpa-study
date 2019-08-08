@@ -31,6 +31,16 @@ public interface IUserService {
   Page<User> findUserListByCity(String city,Pageable pageable);
 
   /**
+   * 单表动态查询条件+分页
+   */
+  Page<User> findUserListByCondition(String name ,String email,Pageable pageable);
+
+  /**
+   * 多表动态查询条件+分页
+   */
+  Page<UserDTO> findUserListByCondition2(UserDTO userDTO,Pageable pageable);
+
+  /**
    * 根据id查询用户
    * @param id
    * @return

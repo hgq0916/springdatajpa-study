@@ -2,12 +2,16 @@ package com.thizgroup.jpa.study.service.impl;
 
 import com.thizgroup.jpa.study.dao.UserDao;
 import com.thizgroup.jpa.study.dao.UserRepository;
+import com.thizgroup.jpa.study.dto.AddressDTO;
 import com.thizgroup.jpa.study.dto.PageRecord;
 import com.thizgroup.jpa.study.dto.UserDTO;
 import com.thizgroup.jpa.study.model.User;
 import com.thizgroup.jpa.study.service.IUserService;
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Order;
@@ -134,6 +138,48 @@ public class UserServiceImpl implements IUserService {
   public Page<User> findUserListByCity(String city, Pageable pageable) {
 
     return userRepository.findUserListByCity(city,pageable);
+  }
+
+  @Override
+  public Page<User> findUserListByCondition(String name, String email, Pageable pageable) {
+    return userRepository.findUserListByCondition(name,email,pageable);
+  }
+
+  @Override
+  public Page<UserDTO> findUserListByCondition2(UserDTO userDTO, Pageable pageable) {
+
+    String name = null;
+    String city = null;
+
+    if(userDTO != null){
+      if(StringUtils.isNotBlank(userDTO.getName())){
+        name = userDTO.getName();
+      }
+      if(userDTO.getAddressDTO() != null && StringUtils.isNotBlank(userDTO.getAddressDTO().getCity())){
+        city = userDTO.getAddressDTO().getCity();
+      }
+    }
+
+    Page<Map<String,Object>> pageList = userRepository
+        .findUserListByCondition2(name,city,pageable);
+
+    Page<UserDTO> userDTOS = pageList.map(data ->
+        UserDTO.builder()
+            .id(((BigInteger) data.get("id")).longValue())
+            .name(data.get("name").toString())
+            .age(((Short) data.get("age")).intValue())
+            .birthday((Date) data.get("birthday"))
+            .email(data.get("email").toString())
+            .addressDTO(
+                AddressDTO.builder()
+                    .country(data.get("country").toString())
+                    .city(data.get("city").toString())
+                    .build()
+            )
+            .build()
+    );
+
+    return userDTOS;
   }
 
   @Override

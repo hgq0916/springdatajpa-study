@@ -48,7 +48,7 @@ public class UserServiceImplTest {
     Page<User> pageList = userService.findUserListByPage(userDTO, PageRequest.of(0, 15));
     System.out.println("分页信息：");
     System.out.println("总记录数："+pageList.getTotalElements()+",总页数："+pageList.getTotalPages());
-    System.out.println("页码："+pageList.getNumber()+",每页条数："+pageList.getSize());
+    System.out.println("页码："+(pageList.getNumber()+1)+",每页条数："+pageList.getSize());
     List<User> content = pageList.getContent();
     content = null == content? new ArrayList<>() : content;
     content.forEach(user->System.out.println(user));
@@ -71,7 +71,7 @@ public class UserServiceImplTest {
 
     System.out.println("分页信息：");
     System.out.println("总记录数："+userListByPage2.getTotalCount()+",总页数："+userListByPage2.getTotalPages());
-    System.out.println("页码："+userListByPage2.getPageNumber()+",每页条数："+userListByPage2.getPageSize());
+    System.out.println("页码："+(userListByPage2.getPageNumber()+1)+",每页条数："+userListByPage2.getPageSize());
     List<UserDTO> content = userListByPage2.getData();
     content = null == content? new ArrayList<>() : content;
     content.forEach(user->System.out.println(user));
@@ -85,8 +85,41 @@ public class UserServiceImplTest {
     Page<User> pageList = userService.findUserListByCity(city, PageRequest.of(0, 15));
     System.out.println("分页信息：");
     System.out.println("总记录数："+pageList.getTotalElements()+",总页数："+pageList.getTotalPages());
-    System.out.println("页码："+pageList.getNumber()+",每页条数："+pageList.getSize());
+    System.out.println("页码："+(pageList.getNumber()+1)+",每页条数："+pageList.getSize());
     List<User> content = pageList.getContent();
+    content = null == content? new ArrayList<>() : content;
+    content.forEach(user->System.out.println(user));
+  }
+
+  @Test
+  public void findUserListByCondition(){
+    String name = null;
+    String email = "@qq.com";
+    //注意：jpa的分页是从0开始的
+    Page<User> pageList = userService.findUserListByCondition(name,email, PageRequest.of(0, 15));
+    System.out.println("分页信息：");
+    System.out.println("总记录数："+pageList.getTotalElements()+",总页数："+pageList.getTotalPages());
+    System.out.println("页码："+(pageList.getNumber()+1)+",每页条数："+pageList.getSize());
+    List<User> content = pageList.getContent();
+    content = null == content? new ArrayList<>() : content;
+    content.forEach(user->System.out.println(user));
+  }
+
+  @Test
+  public void findUserListByCondition2(){
+    String name = null;
+    String city = "武汉";
+    UserDTO userDTO = new UserDTO();
+    userDTO.setName(name);
+    AddressDTO addressDTO = new AddressDTO();
+    addressDTO.setCity(city);
+    userDTO.setAddressDTO(addressDTO);
+    //注意：jpa的分页是从0开始的
+    Page<UserDTO> pageList = userService.findUserListByCondition2(userDTO, PageRequest.of(0, 1));
+    System.out.println("分页信息：");
+    System.out.println("总记录数："+pageList.getTotalElements()+",总页数："+pageList.getTotalPages());
+    System.out.println("页码："+(pageList.getNumber()+1)+",每页条数："+pageList.getSize());
+    List<UserDTO> content = pageList.getContent();
     content = null == content? new ArrayList<>() : content;
     content.forEach(user->System.out.println(user));
   }
