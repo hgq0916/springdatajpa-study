@@ -83,6 +83,7 @@ public class UserDao {
     //设置查询参数
     if(args.size()>0){
       for(int i=0;i<args.size();i++){
+        //注意：jpa的setParameter是从1开始的
         query.setParameter(i+1,args.get(i));
       }
     }

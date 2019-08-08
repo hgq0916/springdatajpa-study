@@ -26,6 +26,11 @@ public interface IUserService {
   PageRecord<UserDTO> findUserDTOListByPage(UserDTO userDTO, Pageable pageable);
 
   /**
+   * 简单分页:查询指定城市的用户
+   */
+  Page<User> findUserListByCity(String city,Pageable pageable);
+
+  /**
    * 根据id查询用户
    * @param id
    * @return

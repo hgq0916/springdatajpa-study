@@ -131,6 +131,12 @@ public class UserServiceImpl implements IUserService {
   }
 
   @Override
+  public Page<User> findUserListByCity(String city, Pageable pageable) {
+
+    return userRepository.findUserListByCity(city,pageable);
+  }
+
+  @Override
   public User findById(Long id) {
     return userRepository.findById(id).orElseGet(()->null);
   }

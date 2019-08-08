@@ -5,7 +5,6 @@ import com.thizgroup.jpa.study.dto.AddressDTO;
 import com.thizgroup.jpa.study.dto.PageRecord;
 import com.thizgroup.jpa.study.dto.UserDTO;
 import com.thizgroup.jpa.study.model.User;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +76,19 @@ public class UserServiceImplTest {
     content = null == content? new ArrayList<>() : content;
     content.forEach(user->System.out.println(user));
 
+  }
+
+  @Test
+  public void findUserListByPage2(){
+    String city = "武汉";
+    //注意：jpa的分页是从0开始的
+    Page<User> pageList = userService.findUserListByCity(city, PageRequest.of(0, 15));
+    System.out.println("分页信息：");
+    System.out.println("总记录数："+pageList.getTotalElements()+",总页数："+pageList.getTotalPages());
+    System.out.println("页码："+pageList.getNumber()+",每页条数："+pageList.getSize());
+    List<User> content = pageList.getContent();
+    content = null == content? new ArrayList<>() : content;
+    content.forEach(user->System.out.println(user));
   }
 
 }
