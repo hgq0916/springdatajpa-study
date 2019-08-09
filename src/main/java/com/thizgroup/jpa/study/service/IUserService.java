@@ -19,6 +19,11 @@ public interface IUserService {
   Page<User> findUserListByPage(UserDTO userDTO, Pageable pageable);
 
   /**
+   * example单表动态条件分页查询
+   */
+  Page<User> findUserListByPage(User user,Pageable pageable);
+
+  /**
    * 查询用户分页信息
    * @param userDTO
    * @return
@@ -29,6 +34,7 @@ public interface IUserService {
    * 简单分页:查询指定城市的用户
    */
   Page<User> findUserListByCity(String city,Pageable pageable);
+
 
   /**
    * 单表动态查询条件+分页

@@ -55,6 +55,22 @@ public class UserServiceImplTest {
   }
 
   @Test
+  public void findUserListByPage3Test() throws Exception{
+
+    User u = new User();
+    u.setName("张");
+    u.setEmail("@qq.com");
+    //注意：jpa的分页是从0开始的
+    Page<User> pageList = userService.findUserListByPage(u, PageRequest.of(0, 15));
+    System.out.println("分页信息：");
+    System.out.println("总记录数："+pageList.getTotalElements()+",总页数："+pageList.getTotalPages());
+    System.out.println("页码："+(pageList.getNumber()+1)+",每页条数："+pageList.getSize());
+    List<User> content = pageList.getContent();
+    content = null == content? new ArrayList<>() : content;
+    content.forEach(user->System.out.println(user));
+  }
+
+  @Test
   public void findUserListByPage2Test() throws Exception {
     UserDTO userDTO = UserDTO.builder()
         .name("诸")

@@ -19,6 +19,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -127,6 +129,17 @@ public class UserServiceImpl implements IUserService {
     };
 
     return userRepository.findAll(specification,pageable);
+  }
+
+  @Override
+  public Page<User> findUserListByPage(User user, Pageable pageable) {
+
+    Example<User> example = Example.of(user,
+        ////模糊查询匹配开头，即{name}%
+        ExampleMatcher.matching().withMatcher("name",ExampleMatcher.GenericPropertyMatchers.startsWith())
+            //是否包含某个字符串 email like ‘%’ + ?0 + ‘%’
+        .withMatcher("email",ExampleMatcher.GenericPropertyMatchers.contains()));
+    return userRepository.findAll(example,pageable);
   }
 
   @Override
