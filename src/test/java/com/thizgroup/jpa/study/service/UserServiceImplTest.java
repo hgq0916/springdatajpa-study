@@ -5,6 +5,7 @@ import com.thizgroup.jpa.study.dto.AddressDTO;
 import com.thizgroup.jpa.study.dto.PageRecord;
 import com.thizgroup.jpa.study.dto.UserDTO;
 import com.thizgroup.jpa.study.model.User;
+import com.thizgroup.jpa.study.utils.DateUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -138,6 +139,31 @@ public class UserServiceImplTest {
     List<UserDTO> content = pageList.getContent();
     content = null == content? new ArrayList<>() : content;
     content.forEach(user->System.out.println(user));
+  }
+
+  @Test
+  public void addUserTest(){
+    UserDTO userDTO = UserDTO.builder()
+        .name("李元芳")
+        .email("yuanfang@qq.com")
+        .birthday(DateUtils.parse("1998-09-08 12:14:15", "yyyy-MM-dd HH:mm:ss"))
+        .age(30)
+        .mobile("18755634343")
+        .build();
+    userService.addUser(userDTO);
+  }
+
+  @Test
+  public void updateUserTest(){
+    UserDTO userDTO = UserDTO.builder()
+        .id(1L)
+        .name("张三丰")
+        .email("feng@qq.com")
+        .birthday(DateUtils.parse("1998-09-08 12:14:15", "yyyy-MM-dd HH:mm:ss"))
+        .age(30)
+        .mobile("18755634343")
+        .build();
+    userService.updateUser(userDTO);
   }
 
 }

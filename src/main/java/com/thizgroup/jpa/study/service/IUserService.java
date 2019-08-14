@@ -53,4 +53,18 @@ public interface IUserService {
    */
   User findById(Long id);
 
+  /**
+   * 添加用户
+   * @param userDTO
+   * @return
+   */
+  User addUser(UserDTO userDTO);
+
+  /***
+   *
+   * 更新用户
+   * @param userDTO
+   */
+  void updateUser(UserDTO userDTO);
+
 }

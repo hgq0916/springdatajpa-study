@@ -7,11 +7,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "tb_user")
 @Data//使用lombok生成getter、setter
+@NoArgsConstructor//生成无参构造方法
 public class User {
 
   @Id
@@ -43,4 +46,15 @@ public class User {
   @Column(name = "modify_date",columnDefinition = "timestamp")
   private Date modifyDate;
 
+  @Builder(toBuilder = true)
+  public User(Long id,String name, String mobile, String email, Integer age, Date birthday,
+      Long addressId) {
+    this.id = id;
+    this.name = name;
+    this.mobile = mobile;
+    this.email = email;
+    this.age = age;
+    this.birthday = birthday;
+    this.addressId = addressId;
+  }
 }

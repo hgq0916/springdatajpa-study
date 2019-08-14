@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import javax.management.relation.RelationNotFoundException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Order;
@@ -27,6 +28,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 @Service
 @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
@@ -195,8 +197,69 @@ public class UserServiceImpl implements IUserService {
     return userDTOS;
   }
 
+
+
   @Override
   public User findById(Long id) {
     return userRepository.findById(id).orElseGet(()->null);
   }
+
+  @Override
+  public User addUser(UserDTO userDTO) {
+
+    userDTO.setId(null);
+    User user = convertDtoToEntity(userDTO);
+    user.setCreateDate(new Date());
+    user.setModifyDate(new Date());
+
+    User savedUser = userRepository.save(user);
+
+    return savedUser;
+  }
+
+  @Override
+  public void updateUser(UserDTO userDTO) {
+    User user = convertDtoToEntity(userDTO);
+    //查询用户信息
+    User userOld = findById(user.getId());
+    if(userOld == null) throw new RuntimeException("user not found");
+    userOld.setModifyDate(new Date());
+    userOld.setEmail(user.getEmail());
+    userOld.setName(user.getName());
+    userOld.setAddressId(user.getAddressId());
+    userOld.setMobile(user.getMobile());
+    userOld.setAge(user.getAge());
+    userOld.setBirthday(user.getBirthday());
+
+    userRepository.save(user);
+  }
+
+  private User convertDtoToEntity(UserDTO userDTO) {
+    Assert.notNull(userDTO,"userDTO cannot be null");
+    return User.builder()
+        .id(userDTO.getId())
+        .name(userDTO.getName())
+        .age(userDTO.getAge())
+        .birthday(userDTO.getBirthday())
+        .addressId(userDTO.getAddressDTO() == null ? null : userDTO.getAddressDTO().getId())
+        .email(userDTO.getEmail())
+        .mobile(userDTO.getMobile())
+        .build();
+  }
+
+  private UserDTO convertEntityToDto(User user) {
+    return user == null ? null : UserDTO.builder()
+        .id(user.getId())
+        .name(user.getName())
+        .mobile(user.getMobile())
+        .email(user.getEmail())
+        .addressDTO(user.getAddressId()== null?null:
+            AddressDTO.builder().id(user.getAddressId()).build())
+        .birthday(user.getBirthday())
+        .createDate(user.getCreateDate())
+        .modifyDate(user.getModifyDate())
+        .age(user.getAge())
+        .build();
+  }
+
 }
