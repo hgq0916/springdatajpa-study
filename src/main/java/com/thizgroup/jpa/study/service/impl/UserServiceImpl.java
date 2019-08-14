@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Order;
@@ -231,6 +232,21 @@ public class UserServiceImpl implements IUserService {
     userOld.setBirthday(user.getBirthday());
 
     userRepository.save(user);
+  }
+
+  @Override
+  public UserDTO findUserByLoginName(String loginName) {
+    return convertEntityToDto(userRepository.findUserByLoginName(loginName));
+  }
+
+  @Override
+  public List<UserDTO> findUserByAddressIdAndAge(Long addressId, int age) {
+    List<User> userList = userRepository.findByAddressIdAndAge(addressId,age);
+    userList = userList == null? new ArrayList<>() : userList;
+    List<UserDTO> userDTOS = userList.stream().map(
+        user -> convertEntityToDto(user)
+    ).collect(Collectors.toList());
+    return userDTOS;
   }
 
   private User convertDtoToEntity(UserDTO userDTO) {

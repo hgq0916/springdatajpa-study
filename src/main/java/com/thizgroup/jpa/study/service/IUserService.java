@@ -3,6 +3,7 @@ package com.thizgroup.jpa.study.service;
 import com.thizgroup.jpa.study.dto.PageRecord;
 import com.thizgroup.jpa.study.dto.UserDTO;
 import com.thizgroup.jpa.study.model.User;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -66,5 +67,18 @@ public interface IUserService {
    * @param userDTO
    */
   void updateUser(UserDTO userDTO);
+
+  /**
+   * 根据登录名查询用户信息,登录名为邮箱或者手机号
+   */
+  UserDTO findUserByLoginName(String loginName);
+
+  /**
+   * 根据地址和年龄查询用户列表
+   * @param addressId 地址id
+   * @param age 年龄
+   * @return
+   */
+  List<UserDTO> findUserByAddressIdAndAge(Long addressId,int age);
 
 }

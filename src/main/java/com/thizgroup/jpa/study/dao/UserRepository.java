@@ -1,5 +1,6 @@
 package com.thizgroup.jpa.study.dao;
 
+import com.thizgroup.jpa.study.dto.UserDTO;
 import com.thizgroup.jpa.study.model.User;
 import java.util.List;
 import java.util.Map;
@@ -8,8 +9,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface UserRepository extends JpaRepository<User,Long>, JpaSpecificationExecutor<User> {
+
+  /**
+   * jpa原生sql查询返回实体类对象
+   * @param loginName 登录名
+   * @return
+   */
+  @Query(nativeQuery = true,value = "select * from tb_user where (email = :loginName or name = :loginName)")
+  User findUserByLoginName(@Param("loginName") String loginName);
 
   /**
    * 分页查询1
@@ -40,4 +50,11 @@ public interface UserRepository extends JpaRepository<User,Long>, JpaSpecificati
           + " and (?2 is null or a.city = ?2) ")
   Page<Map<String,Object>> findUserListByCondition2(String name,String city,Pageable pageable);
 
+  /**
+   * 使用jpql语句查询，jpa根据方法名生成sql语句
+   * @param addressId
+   * @param age
+   * @return
+   */
+  List<User> findByAddressIdAndAge(Long addressId, int age);
 }

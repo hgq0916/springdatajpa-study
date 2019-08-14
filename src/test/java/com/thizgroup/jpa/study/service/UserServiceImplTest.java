@@ -166,4 +166,17 @@ public class UserServiceImplTest {
     userService.updateUser(userDTO);
   }
 
+  @Test
+  public void findUserByLoginNameTest(){
+    String loginName = "di@qq.com";
+    UserDTO userDTO = userService.findUserByLoginName(loginName);
+    System.out.println(userDTO);
+  }
+
+  @Test
+  public void findUserByAddressIdAndAgeTest(){
+    List<UserDTO> userDTOS = userService.findUserByAddressIdAndAge(22L, 54);
+    userDTOS.forEach(userDTO -> System.out.println(userDTO));
+  }
+
 }
