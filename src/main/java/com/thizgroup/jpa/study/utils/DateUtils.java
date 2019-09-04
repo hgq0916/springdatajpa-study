@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * @author gangquan.hu
  * @Package: com.thizgroup.mybatis.study.utils.DateUtils
- * @Description: TODO
+ * @Description: 日期工具类
  * @date 2019/8/12 15:57
  */
 public class DateUtils {
