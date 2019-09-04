@@ -5,6 +5,7 @@ import com.thizgroup.jpa.study.dao.UserRepository;
 import com.thizgroup.jpa.study.dto.AddressDTO;
 import com.thizgroup.jpa.study.dto.PageRecord;
 import com.thizgroup.jpa.study.dto.UserDTO;
+import com.thizgroup.jpa.study.dto.UserProjection;
 import com.thizgroup.jpa.study.model.User;
 import com.thizgroup.jpa.study.service.IUserService;
 import java.math.BigInteger;
@@ -247,6 +248,11 @@ public class UserServiceImpl implements IUserService {
         user -> convertEntityToDto(user)
     ).collect(Collectors.toList());
     return userDTOS;
+  }
+
+  @Override
+  public UserProjection findUserInfoById(Long id) {
+    return userRepository.findUserInfoById(id);
   }
 
   private User convertDtoToEntity(UserDTO userDTO) {

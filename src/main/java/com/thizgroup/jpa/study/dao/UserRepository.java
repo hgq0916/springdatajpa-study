@@ -1,6 +1,7 @@
 package com.thizgroup.jpa.study.dao;
 
 import com.thizgroup.jpa.study.dto.UserDTO;
+import com.thizgroup.jpa.study.dto.UserProjection;
 import com.thizgroup.jpa.study.model.User;
 import java.util.List;
 import java.util.Map;
@@ -57,4 +58,9 @@ public interface UserRepository extends JpaRepository<User,Long>, JpaSpecificati
    * @return
    */
   List<User> findByAddressIdAndAge(Long addressId, int age);
+
+  @Query("select u.id as id,u.name as name,u.age as age,u.mobile as mobile,a.country as country,"
+      + " a.city as city from User u "
+      + " left join Address a on u.addressId=a.id where u.id =:id")
+  UserProjection findUserInfoById(@Param("id") Long id);
 }

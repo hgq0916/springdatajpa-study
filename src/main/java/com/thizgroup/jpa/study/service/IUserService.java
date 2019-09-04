@@ -2,6 +2,7 @@ package com.thizgroup.jpa.study.service;
 
 import com.thizgroup.jpa.study.dto.PageRecord;
 import com.thizgroup.jpa.study.dto.UserDTO;
+import com.thizgroup.jpa.study.dto.UserProjection;
 import com.thizgroup.jpa.study.model.User;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -80,5 +81,12 @@ public interface IUserService {
    * @return
    */
   List<UserDTO> findUserByAddressIdAndAge(Long addressId,int age);
+
+  /**
+   * 使用jpa投影查询用户信息
+   * @param id
+   * @return
+   */
+  UserProjection findUserInfoById(Long id);
 
 }

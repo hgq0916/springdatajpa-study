@@ -4,6 +4,7 @@ import com.thizgroup.jpa.study.JpaApplication;
 import com.thizgroup.jpa.study.dto.AddressDTO;
 import com.thizgroup.jpa.study.dto.PageRecord;
 import com.thizgroup.jpa.study.dto.UserDTO;
+import com.thizgroup.jpa.study.dto.UserProjection;
 import com.thizgroup.jpa.study.model.User;
 import com.thizgroup.jpa.study.utils.DateUtils;
 import java.text.SimpleDateFormat;
@@ -177,6 +178,12 @@ public class UserServiceImplTest {
   public void findUserByAddressIdAndAgeTest(){
     List<UserDTO> userDTOS = userService.findUserByAddressIdAndAge(22L, 54);
     userDTOS.forEach(userDTO -> System.out.println(userDTO));
+  }
+
+  @Test
+  public void findUserInfoByIdTest(){
+    UserProjection userProjection = userService.findUserInfoById(1L);
+    System.out.println(userProjection.getId()+","+userProjection.getAge()+","+userProjection.getCountry());
   }
 
 }

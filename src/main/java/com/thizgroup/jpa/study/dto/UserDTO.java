@@ -33,5 +33,4 @@ public class UserDTO {
   private Date startTime;
 
   private Date endTime;
-
 }
