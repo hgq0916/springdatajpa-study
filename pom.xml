@@ -60,6 +60,12 @@
       <version>3.0</version>
     </dependency>
 
+    <!-- 用于打印jdbc输出的sql语句及参数-->
+    <dependency>
+      <groupId>com.googlecode.log4jdbc</groupId>
+      <artifactId>log4jdbc</artifactId>
+      <version>1.2</version>
+    </dependency>
 
   </dependencies>
 

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,13 +29,24 @@ public class UserServiceImplTest {
   @Autowired
   private IUserService userService;
 
-  private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
   @Test
   public void findByIdTest(){
     User user = userService.findById(1L);
     System.out.println(user);
   }
+
+
+  @Test
+  public void findUserByNameTest(){
+    User user = userService.findUserByName("狄仁杰");
+    System.out.println(user);
+  }
+
+
+
+
+  private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
   @Test
   public void findUserListByPageTest() throws Exception{
@@ -186,4 +198,27 @@ public class UserServiceImplTest {
     System.out.println(userProjection.getId()+","+userProjection.getAge()+","+userProjection.getCountry());
   }
 
+  @Test
+  public void findUserByCityAndAgeTest(){
+    List<User> userList = userService.findUserByCityAndAge("武汉", 50);
+    if(userList!=null){
+      userList.forEach(u->System.out.println(u));
+    }
+  }
+
+  @Test
+  public void findUserByNameLikeTest(){
+    List<User> userList = userService.findUserByNameLike("张");
+    System.out.println(userList);
+  }
+
+  @Test
+  public void updateUserNameByIdTest(){
+    userService.updateUserNameById("张三丰",1L);
+  }
+
+  @Test
+  public void deleteByIdTest(){
+    userService.deleteById(1L);
+  }
 }

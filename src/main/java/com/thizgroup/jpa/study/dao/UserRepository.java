@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -63,4 +64,32 @@ public interface UserRepository extends JpaRepository<User,Long>, JpaSpecificati
       + " a.city as city from User u "
       + " left join Address a on u.addressId=a.id where u.id =:id")
   UserProjection findUserInfoById(@Param("id") Long id);
+
+  /**
+   * 根据用户名查询用户信息
+   * @param name
+   * @return
+   */
+  User findTopByName(String name);
+
+  /**
+   * 根据城市名称和年龄范围查询用户列表
+   * @param city
+   * @param age
+   * @return
+   */
+  /*@Query("from User u left join Address a on u.addressId=a.id "
+      + " where a.city=?1 and u.age<=?2 ")
+  List<User> findUserByCityAndAge(String city,int age);*/
+  @Query("from User u left join Address a on u.addressId=a.id "
+      + " where a.city=:city and u.age<=:age ")
+  List<User> findUserByCityAndAge(@Param("city") String city,@Param("age") int age);
+
+  @Query("from User where name like %:name%")
+  List<User> findUserByNameLike(@Param("name") String name);
+
+  @Modifying
+  @Query("update User set name = :name where id = :id")
+  int updateUserNameById(@Param("name") String name,@Param("id") Long id);
+
 }

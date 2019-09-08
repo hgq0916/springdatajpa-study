@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -202,7 +203,9 @@ public class UserServiceImpl implements IUserService {
 
   @Override
   public User findById(Long id) {
-    return userRepository.findById(id).orElseGet(()->null);
+    Optional<User> userOptional = userRepository.findById(id);
+    User user = userOptional.orElseGet(() -> null);
+    return user;
   }
 
   @Override
@@ -253,6 +256,31 @@ public class UserServiceImpl implements IUserService {
   @Override
   public UserProjection findUserInfoById(Long id) {
     return userRepository.findUserInfoById(id);
+  }
+
+  @Override
+  public User findUserByName(String name) {
+    return userRepository.findTopByName(name);
+  }
+
+  @Override
+  public List<User> findUserByCityAndAge(String city, int age) {
+    return userRepository.findUserByCityAndAge(city,age);
+  }
+
+  @Override
+  public List<User> findUserByNameLike(String name) {
+    return userRepository.findUserByNameLike(name);
+  }
+
+  @Override
+  public void updateUserNameById(String name, Long id) {
+    userRepository.updateUserNameById(name,id);
+  }
+
+  @Override
+  public void deleteById(Long id) {
+    userRepository.deleteById(id);
   }
 
   private User convertDtoToEntity(UserDTO userDTO) {

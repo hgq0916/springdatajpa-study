@@ -89,4 +89,20 @@ public interface IUserService {
    */
   UserProjection findUserInfoById(Long id);
 
+  /**
+   * 根据用户名查询用户信息
+   * @param name
+   * @return
+   */
+  User findUserByName(String name);
+
+  List<User> findUserByCityAndAge(String city,int age);
+
+
+  List<User> findUserByNameLike(String name);
+
+  void updateUserNameById(String name,Long id);
+
+  void deleteById(Long id);
+
 }
