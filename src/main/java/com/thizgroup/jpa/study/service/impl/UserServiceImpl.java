@@ -122,7 +122,7 @@ public class UserServiceImpl implements IUserService {
         //按照创建时间 倒序排序
         orderList.add(criteriaBuilder.desc(root.get("createDate")));
         // 按照生日顺序排序
-        orderList.add(criteriaBuilder.desc(root.get("birthday")));
+        //orderList.add(criteriaBuilder.asc(root.get("birthday")));
 
         //设置排序条件
         criteriaQuery.orderBy(orderList);

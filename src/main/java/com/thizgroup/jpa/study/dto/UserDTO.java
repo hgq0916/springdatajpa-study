@@ -14,23 +14,23 @@ public class UserDTO {
 
   private Long id;
 
-  private String name;
+  private String name;//姓名
 
-  private Integer age;
+  private Integer age;//年龄
 
-  private String mobile;
+  private String mobile;//手机号
 
-  private String email;
+  private String email;//邮箱
 
-  private Date birthday;
+  private Date birthday;//生日
 
-  private AddressDTO addressDTO;
+  private AddressDTO addressDTO;//地址
 
-  private Date createDate;
+  private Date createDate;//创建时间
 
-  private Date modifyDate;
+  private Date modifyDate;//修改时间
 
-  private Date startTime;
+  private Date startTime;//开始时间
 
-  private Date endTime;
+  private Date endTime;//结束时间
 }
