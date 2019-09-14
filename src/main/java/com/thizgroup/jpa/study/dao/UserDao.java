@@ -5,6 +5,7 @@ import com.thizgroup.jpa.study.dto.PageBean;
 import com.thizgroup.jpa.study.dto.PageRecord;
 import com.thizgroup.jpa.study.dto.UserDTO;
 import com.thizgroup.jpa.study.dto.UserInfo;
+import com.thizgroup.jpa.study.dto.UserInfo2;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,6 +13,9 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.query.internal.NativeQueryImpl;
+import org.hibernate.transform.Transformers;
+import org.hibernate.type.StandardBasicTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -212,6 +216,93 @@ public class UserDao {
     List<UserInfo> resultList = query.getResultList();
 
    return new PageRecord<UserInfo>(pageBean,resultList);
+  }
+
+  //使用entityManager实现多表联合带条件带分页查询及排序
+  public PageRecord<UserInfo2> findUserListByPage3(UserDTO userDTO, Pageable pageable){
+
+    List<Object> args = new ArrayList<>();//用于封装参数
+
+    StringBuffer sql = new StringBuffer();
+    sql.append(
+        " select u.id as id,u.name as name,u.age as age,u.birthday as birthday,u.mobile as mobile,"
+            + "u.email as email,a.country as country,a.province as province,a.city as city "
+            + ", u.create_date as createTime"
+            + " from tb_user u "
+            + " left join  tb_address a on u.address_id = a.id "
+            + " where 1=1 "
+    );
+
+    if(userDTO  != null){
+      if(StringUtils.isNotBlank(userDTO.getName())){
+        //模糊查询
+        sql.append(" and u.name like ? ");
+        args.add("%"+userDTO.getName()+"%");
+      }
+      if(null != userDTO.getAge()){
+        //精确查询
+        sql.append(" and u.age = ? ");
+        args.add(userDTO.getAge());
+      }
+      //求生日在某个时间段范围内的用户
+      if(null != userDTO.getStartTime()){
+        //大于等于
+        sql.append(" and u.birthday >= ? ");
+        args.add(userDTO.getStartTime());
+      }
+      if(null != userDTO.getEndTime()){
+        //小于等于
+        sql.append(" and u.birthday <= ? ");
+        args.add(userDTO.getEndTime());
+      }
+
+      if(userDTO.getAddressDTO() != null) {
+        AddressDTO addressDTO = userDTO.getAddressDTO();
+        //查询某个城市的用户
+        if(StringUtils.isNotBlank(addressDTO.getCity())) {
+          sql.append(" and a.city = ? ");
+          args.add(addressDTO.getCity());
+        }
+      }
+
+    }
+
+    //按照创建时间倒序排序
+    sql.append(" order by u.create_date desc ");
+
+    //创建query对象
+    NativeQueryImpl query = entityManager.createNativeQuery(sql.toString())
+        .unwrap(NativeQueryImpl.class);
+
+    query.setResultTransformer(Transformers.aliasToBean(UserInfo2.class));
+
+    query.addScalar("id", StandardBasicTypes.LONG);
+    query.addScalar("name",StandardBasicTypes.STRING);
+    query.addScalar("age",StandardBasicTypes.INTEGER);
+    query.addScalar("birthday",StandardBasicTypes.TIMESTAMP);
+    query.addScalar("mobile",StandardBasicTypes.STRING);
+    query.addScalar("email",StandardBasicTypes.STRING);
+    query.addScalar("country",StandardBasicTypes.STRING);
+    query.addScalar("province",StandardBasicTypes.STRING);
+    query.addScalar("city",StandardBasicTypes.STRING);
+    query.addScalar("createTime",StandardBasicTypes.TIMESTAMP);
+
+    //设置查询参数
+    if(args.size()>0){
+      for(int i=0;i<args.size();i++){
+        //注意：jpa的setParameter是从1开始的
+        query.setParameter(i+1,args.get(i));
+      }
+    }
+
+    PageBean pageBean = findPageBean(sql.toString(), args, pageable);
+
+    //分页查询
+    query.setFirstResult(pageBean.getPageNumber()*pageBean.getPageSize());
+    query.setMaxResults(pageBean.getPageNumber()*pageBean.getPageSize()+pageBean.getPageSize());
+    List<UserInfo2> resultList = query.list();
+
+    return new PageRecord<UserInfo2>(pageBean,resultList);
   }
 
 }
