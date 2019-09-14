@@ -140,9 +140,12 @@ public class UserServiceImpl implements IUserService {
 
     Example<User> example = Example.of(user,
         ////模糊查询匹配开头，即{name}%
-        ExampleMatcher.matching().withMatcher("name",ExampleMatcher.GenericPropertyMatchers.startsWith())
+        ExampleMatcher.matching().
+            withMatcher("name",ExampleMatcher.GenericPropertyMatchers.startsWith())
             //是否包含某个字符串 email like ‘%’ + ?0 + ‘%’
-        .withMatcher("email",ExampleMatcher.GenericPropertyMatchers.contains()));
+        .withMatcher("email",ExampleMatcher.GenericPropertyMatchers.contains())
+            //按照年龄精确查询
+        .withMatcher("age",ExampleMatcher.GenericPropertyMatchers.exact()));
     return userRepository.findAll(example,pageable);
   }
 

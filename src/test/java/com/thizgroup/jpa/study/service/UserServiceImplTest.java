@@ -74,6 +74,7 @@ public class UserServiceImplTest {
     User u = new User();
     u.setName("张");
     u.setEmail("@qq.com");
+    u.setAge(35);
     //注意：jpa的分页是从0开始的
     Page<User> pageList = userService.findUserListByPage(u, PageRequest.of(0, 15));
     System.out.println("分页信息：");

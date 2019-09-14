@@ -13,10 +13,10 @@ public class AddressDTO {
 
   private Long id;
 
-  private String country;
+  private String country;//国家
 
-  private String province;
+  private String province;//省份
 
-  private String city;
+  private String city;//城市
 
 }
