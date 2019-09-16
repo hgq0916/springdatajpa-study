@@ -196,7 +196,8 @@ public class UserServiceImplTest {
   @Test
   public void findUserInfoByIdTest(){
     UserProjection userProjection = userService.findUserInfoById(1L);
-    System.out.println(userProjection.getId()+","+userProjection.getAge()+","+userProjection.getCountry());
+    System.out.println("id:"+userProjection.getId()+",age:"+userProjection.getAge()+",country:"+userProjection.getCountry()
+    +",address:"+userProjection.getAddress());
   }
 
   @Test
