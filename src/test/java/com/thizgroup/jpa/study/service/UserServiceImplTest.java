@@ -32,7 +32,7 @@ public class UserServiceImplTest {
 
   @Test
   public void findByIdTest(){
-    User user = userService.findById(1L);
+    User user = userService.findById(5L);
     System.out.println(user);
   }
 
@@ -156,6 +156,7 @@ public class UserServiceImplTest {
   }
 
   @Test
+  @Rollback(value = false)
   public void addUserTest(){
     UserDTO userDTO = UserDTO.builder()
         .name("李元芳")
@@ -223,4 +224,5 @@ public class UserServiceImplTest {
   public void deleteByIdTest(){
     userService.deleteById(1L);
   }
+
 }

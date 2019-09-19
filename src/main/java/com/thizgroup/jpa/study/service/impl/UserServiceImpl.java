@@ -216,8 +216,8 @@ public class UserServiceImpl implements IUserService {
 
     userDTO.setId(null);
     User user = convertDtoToEntity(userDTO);
-    user.setCreateDate(new Date());
-    user.setModifyDate(new Date());
+    //user.setCreateDate(new Date());
+    //user.setModifyDate(new Date());
 
     User savedUser = userRepository.save(user);
 
@@ -230,7 +230,7 @@ public class UserServiceImpl implements IUserService {
     //查询用户信息
     User userOld = findById(user.getId());
     if(userOld == null) throw new RuntimeException("user not found");
-    userOld.setModifyDate(new Date());
+    //userOld.setModifyDate(new Date());
     userOld.setEmail(user.getEmail());
     userOld.setName(user.getName());
     userOld.setAddressId(user.getAddressId());
