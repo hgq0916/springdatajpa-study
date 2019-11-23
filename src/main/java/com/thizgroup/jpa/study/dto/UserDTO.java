@@ -1,5 +1,6 @@
 package com.thizgroup.jpa.study.dto;
 
+import com.thizgroup.jpa.study.enums.SexEnum;
 import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,4 +34,6 @@ public class UserDTO {
   private Date startTime;//开始时间
 
   private Date endTime;//结束时间
+
+  private SexEnum sex;//性别
 }

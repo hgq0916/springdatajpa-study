@@ -236,6 +236,7 @@ public class UserServiceImpl implements IUserService {
     userOld.setAddressId(user.getAddressId());
     userOld.setMobile(user.getMobile());
     userOld.setAge(user.getAge());
+    userOld.setSex(userDTO.getSex());
     userOld.setBirthday(user.getBirthday());
 
     userRepository.save(user);
@@ -296,6 +297,7 @@ public class UserServiceImpl implements IUserService {
         .addressId(userDTO.getAddressDTO() == null ? null : userDTO.getAddressDTO().getId())
         .email(userDTO.getEmail())
         .mobile(userDTO.getMobile())
+        .sex(userDTO.getSex())
         .build();
   }
 
@@ -311,6 +313,7 @@ public class UserServiceImpl implements IUserService {
         .createDate(user.getCreateDate())
         .modifyDate(user.getModifyDate())
         .age(user.getAge())
+        .sex(user.getSex())
         .build();
   }
 

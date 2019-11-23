@@ -18,9 +18,11 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@MappedSuperclass
+@MappedSuperclass//这个注解的意思是这个类jpa不会为它创建数据库表，
+//jpa会将这个类的所有字段映射到它的子类的数据库表中
 @Data
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners(AuditingEntityListener.class)//对实体属性变化的跟踪，它提供了保存前，保存后，更新前，
+// 更新后，删除前，删除后等状态，就像是拦截器一样，你可以在拦截方法里重写你的个性化逻辑。
 public abstract class BaseEntity   implements Serializable {
 
   @Id

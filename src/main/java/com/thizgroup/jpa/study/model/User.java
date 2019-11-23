@@ -1,7 +1,10 @@
 package com.thizgroup.jpa.study.model;
 
+import com.thizgroup.jpa.study.converter.SexEnumAttributeConverter;
+import com.thizgroup.jpa.study.enums.SexEnum;
 import java.util.Date;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import lombok.Builder;
@@ -33,9 +36,13 @@ public class User extends BaseEntity{
   @Column(name = "address_id",columnDefinition = "bigint(20)")
   private Long addressId;
 
+  //@Convert(converter = SexEnumAttributeConverter.class)
+  @Column(name="sex",columnDefinition = "int(1)")
+  private SexEnum sex;
+
   @Builder(toBuilder = true)
   public User(Long id,String name, String mobile, String email, Integer age, Date birthday,
-      Long addressId) {
+      Long addressId,SexEnum sex) {
     this.id = id;
     this.name = name;
     this.mobile = mobile;
@@ -43,5 +50,6 @@ public class User extends BaseEntity{
     this.age = age;
     this.birthday = birthday;
     this.addressId = addressId;
+    this.sex = sex;
   }
 }

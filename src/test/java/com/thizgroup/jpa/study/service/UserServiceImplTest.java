@@ -5,6 +5,7 @@ import com.thizgroup.jpa.study.dto.AddressDTO;
 import com.thizgroup.jpa.study.dto.PageRecord;
 import com.thizgroup.jpa.study.dto.UserDTO;
 import com.thizgroup.jpa.study.dto.UserProjection;
+import com.thizgroup.jpa.study.enums.SexEnum;
 import com.thizgroup.jpa.study.model.User;
 import com.thizgroup.jpa.study.utils.DateUtils;
 import java.text.SimpleDateFormat;
@@ -164,6 +165,7 @@ public class UserServiceImplTest {
         .birthday(DateUtils.parse("1998-09-08 12:14:15", "yyyy-MM-dd HH:mm:ss"))
         .age(30)
         .mobile("18755634343")
+        .sex(SexEnum.MAN)
         .build();
     userService.addUser(userDTO);
   }
