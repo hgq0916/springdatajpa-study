@@ -8,7 +8,9 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.thizgroup.jpa.study.dao.PersonRepository;
 import com.thizgroup.jpa.study.dto.PersonDTO;
+import com.thizgroup.jpa.study.dto.PersonDeptDTO;
 import com.thizgroup.jpa.study.model.Person;
+import com.thizgroup.jpa.study.model.QDepartment;
 import com.thizgroup.jpa.study.model.QPerson;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -183,6 +185,38 @@ public class PersonService {
                 .fetch();
         return personList;
 
+    }
+
+    public List<PersonDeptDTO> findByDepatmentIdDTO(String deptId){
+        QPerson qPerson = QPerson.person;
+        QDepartment qDepartment = QDepartment.department;
+
+        List<PersonDeptDTO> personDeptDTOS = jpaQueryFactory.select(
+                qPerson.nickName, qPerson.userId, qPerson.birthday, qPerson.username,
+                qDepartment.deptName, qDepartment.createDate
+        )
+                .from(qPerson)
+                //.join(qPerson.department, qDepartment)
+                .leftJoin(qDepartment)
+                .on(qPerson.department.deptId.eq(qDepartment.deptId))
+                .where(qDepartment.deptId.eq(Integer.parseInt(deptId)))
+                .offset(0)
+                .limit(1)
+                .fetch()
+                .stream().map(
+                        tuple -> {
+                            PersonDeptDTO personDeptDTO = PersonDeptDTO.builder()
+                                    .birthday(tuple.get(qPerson.birthday).toString())
+                                    .deptBirth(tuple.get(qDepartment.createDate).toString())
+                                    .deptName(tuple.get(qDepartment.deptName))
+                                    .nickname(tuple.get(qPerson.nickName))
+                                    .username(tuple.get(qPerson.username))
+                                    .build();
+                            return personDeptDTO;
+                        }
+                ).collect(Collectors.toList());
+
+        return personDeptDTOS;
     }
 
 }

@@ -3,6 +3,7 @@ package com.thizgroup.jpa.study.service;
 import com.querydsl.core.QueryResults;
 import com.thizgroup.jpa.study.JpaApplication;
 import com.thizgroup.jpa.study.dto.PersonDTO;
+import com.thizgroup.jpa.study.dto.PersonDeptDTO;
 import com.thizgroup.jpa.study.model.Person;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -85,6 +86,12 @@ public class PersonServiceTest {
                 .build();
         List<Person> personList = personService.findByUserPropertiesGroupByUIndex(searchDTO);
         System.out.println(personList);
+    }
+
+    @Test
+    public void findByDepatmentIdDTO(){
+        List<PersonDeptDTO> depatmentIdDTO = personService.findByDepatmentIdDTO("333");
+        System.out.println(depatmentIdDTO);
     }
 
 }

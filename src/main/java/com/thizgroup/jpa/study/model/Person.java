@@ -18,4 +18,8 @@ public class Person {
     private String nickName;
     private Date birthday;
     private BigDecimal uIndex;  //排序号
+
+    @ManyToOne(cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
+    @JoinColumn(name = "dept_id")
+    private Department department;
 }
