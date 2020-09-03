@@ -1,16 +1,22 @@
 package com.thizgroup.jpa.study.service;
 
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.thizgroup.jpa.study.dao.PersonRepository;
 import com.thizgroup.jpa.study.dto.PersonDTO;
 import com.thizgroup.jpa.study.model.Person;
 import com.thizgroup.jpa.study.model.QPerson;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -108,6 +114,51 @@ public class PersonService {
                 .from(qPerson)
                 .fetch();
         return personDTOS;
+    }
+
+    /**
+     * 使用jpa整合的dsl
+     */
+    public List<Person> findByNicknameAndUsername(){
+        QPerson qPerson = QPerson.person;
+        List<Person> personList = (List<Person>) personRepository.findAll(
+                qPerson.username.like("里%").and(
+                        qPerson.nickName.like("哈%")
+                ),
+                qPerson.uIndex.asc()
+        );
+
+        return personList;
+
+    }
+
+    /**
+     * 根据条件统计人数
+     */
+    public long findCount(){
+        long count = personRepository.count(QPerson.person.username.like("里%"));
+        return count;
+    }
+
+    public Page<Person> findByPersonCondition(PersonDTO searchDTO,Pageable pageable){
+
+        QPerson qPerson = QPerson.person;
+
+        Predicate predicate = qPerson.isNotNull().or(qPerson.isNull());
+
+        if(searchDTO != null){
+            if(StringUtils.isNotBlank(searchDTO.getNickName())){
+                predicate = ExpressionUtils.and(predicate,qPerson.nickName.like("哈%"));
+            }
+            if(StringUtils.isNotBlank(searchDTO.getUserId())){
+                predicate = ExpressionUtils.and(predicate,qPerson.userId.eq(Integer.parseInt(searchDTO.getUserId())));
+            }
+        }
+
+        Page<Person> personPage = personRepository.findAll(predicate, pageable);
+
+        return personPage;
+
     }
 
 }

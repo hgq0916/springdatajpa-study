@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Propagation;
@@ -54,6 +55,27 @@ public class PersonServiceTest {
     public void findUserDTO2(){
         List<PersonDTO> userDTO2 = personService.findUserDTO2();
         System.out.println(userDTO2);
+    }
+
+    @Test
+    public void findByNicknameAndUsername(){
+        List<Person> personList = personService.findByNicknameAndUsername();
+        System.out.println(personList);
+    }
+
+    @Test
+    public void findCount(){
+        long count = personService.findCount();
+        System.out.println(count);
+    }
+
+    @Test
+    public void findByPersonCondition(){
+        PersonDTO searchDTO = PersonDTO.builder()
+                .userId("2")
+                .build();
+        Page<Person> personPage = personService.findByPersonCondition(searchDTO, PageRequest.of(0, 1));
+        System.out.println(personPage);
     }
 
 }
