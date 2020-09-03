@@ -33,7 +33,7 @@ public class UserServiceImplTest {
 
   @Test
   public void findByIdTest(){
-    User user = userService.findById(5L);
+    User user = userService.findById(3L);
     System.out.println(user);
   }
 
