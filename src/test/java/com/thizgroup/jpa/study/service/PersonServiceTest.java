@@ -78,4 +78,13 @@ public class PersonServiceTest {
         System.out.println(personPage);
     }
 
+    @Test
+    public void findByUserPropertiesGroupByUIndex(){
+        PersonDTO searchDTO = PersonDTO.builder()
+                //.nickName("1")
+                .build();
+        List<Person> personList = personService.findByUserPropertiesGroupByUIndex(searchDTO);
+        System.out.println(personList);
+    }
+
 }

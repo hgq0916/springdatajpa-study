@@ -161,4 +161,28 @@ public class PersonService {
 
     }
 
+    List<Person> findByUserPropertiesGroupByUIndex(PersonDTO searchDTO){
+        QPerson qPerson = QPerson.person;
+
+        Predicate predicate = qPerson.isNotNull().or(qPerson.isNull());
+
+        if(searchDTO != null){
+            if(StringUtils.isNotBlank(searchDTO.getNickName())){
+                predicate = ExpressionUtils.and(predicate,qPerson.nickName.like("哈%"));
+            }
+            if(StringUtils.isNotBlank(searchDTO.getUserId())){
+                predicate = ExpressionUtils.and(predicate,qPerson.userId.eq(Integer.parseInt(searchDTO.getUserId())));
+            }
+        }
+
+        List<Person> personList = jpaQueryFactory.selectFrom(qPerson)
+                .where(predicate)
+                .groupBy(qPerson.uIndex)
+                .having(qPerson.uIndex.longValue().max().goe(5))
+                .orderBy(qPerson.uIndex.asc())
+                .fetch();
+        return personList;
+
+    }
+
 }
