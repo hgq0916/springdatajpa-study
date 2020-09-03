@@ -50,5 +50,10 @@ public class PersonServiceTest {
         System.out.println(allUserDto);
     }
 
+    @Test
+    public void findUserDTO2(){
+        List<PersonDTO> userDTO2 = personService.findUserDTO2();
+        System.out.println(userDTO2);
+    }
 
 }

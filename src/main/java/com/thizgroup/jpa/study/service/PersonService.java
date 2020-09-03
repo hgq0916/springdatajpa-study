@@ -1,6 +1,7 @@
 package com.thizgroup.jpa.study.service;
 
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.thizgroup.jpa.study.dao.PersonRepository;
 import com.thizgroup.jpa.study.dto.PersonDTO;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -87,13 +87,26 @@ public class PersonService {
                                     .userId(tuple.get(qPerson.userId).toString())
                                     .birthday(tuple.get(qPerson.birthday).toString())
                                     .username(tuple.get(3, String.class))
-                                    .nickname(tuple.get(4, String.class))
+                                    .nickName(tuple.get(4, String.class))
                                     .build();
                             return personDTO;
 
                         }
                 ).collect(Collectors.toList());
 
+        return personDTOS;
+    }
+
+    /**
+     * 部分字段映射查询
+     */
+    public List<PersonDTO> findUserDTO2(){
+        QPerson qPerson = QPerson.person;
+
+        List<PersonDTO> personDTOS = jpaQueryFactory.select(Projections.bean(PersonDTO.class,
+                qPerson.nickName, qPerson.username))
+                .from(qPerson)
+                .fetch();
         return personDTOS;
     }
 
