@@ -30,7 +30,7 @@ public interface IUserService {
    * @param userDTO
    * @return
    */
-  PageRecord<UserDTO> findUserDTOListByPage(UserDTO userDTO, Pageable pageable);
+  PageRecord<UserDTO> findUserDtoListByPage(UserDTO userDTO, Pageable pageable);
 
   /**
    * 简单分页:查询指定城市的用户

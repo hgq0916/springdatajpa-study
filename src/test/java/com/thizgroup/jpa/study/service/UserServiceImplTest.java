@@ -99,7 +99,7 @@ public class UserServiceImplTest {
         .build();
     //注意：jpa的分页是从0开始的
     PageRecord<UserDTO> userListByPage2 = userService
-        .findUserDTOListByPage(userDTO, PageRequest.of(0, 15));
+        .findUserDtoListByPage(userDTO, PageRequest.of(0, 15));
 
     System.out.println("分页信息：");
     System.out.println("总记录数："+userListByPage2.getTotalCount()+",总页数："+userListByPage2.getTotalPages());

@@ -108,8 +108,12 @@ public class UserServiceImpl implements IUserService {
 
         //拼接查询条件
         List<Predicate> predicates = new ArrayList<>();
-        if(andPredicate != null) predicates.add(andPredicate);
-        if(orPredicate != null) predicates.add(orPredicate);
+        if(andPredicate != null) {
+          predicates.add(andPredicate);
+        }
+        if(orPredicate != null) {
+          predicates.add(orPredicate);
+        }
 
         Predicate predicate = null;
         if(predicates.size()>0){
@@ -150,7 +154,7 @@ public class UserServiceImpl implements IUserService {
   }
 
   @Override
-  public PageRecord<UserDTO> findUserDTOListByPage(UserDTO userDTO, Pageable pageable) {
+  public PageRecord<UserDTO> findUserDtoListByPage(UserDTO userDTO, Pageable pageable) {
     return userDao.findUserListByPage(userDTO,pageable);
   }
 
@@ -229,7 +233,9 @@ public class UserServiceImpl implements IUserService {
     User user = convertDtoToEntity(userDTO);
     //查询用户信息
     User userOld = findById(user.getId());
-    if(userOld == null) throw new RuntimeException("user not found");
+    if(userOld == null) {
+      throw new RuntimeException("user not found");
+    }
     //userOld.setModifyDate(new Date());
     userOld.setEmail(user.getEmail());
     userOld.setName(user.getName());
